@@ -84,9 +84,12 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <a id="more"></a>
-<h1 id="tm-结构"><a href="#tm-结构" class="headerlink" title="tm 结构"></a>tm 结构</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">tm</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> tm_sec;         <span class="comment">// seconds</span></span><br><span class="line">    <span class="keyword">int</span> tm_min;         <span class="comment">// minutes</span></span><br><span class="line">    <span class="keyword">int</span> tm_hour;        <span class="comment">// hours</span></span><br><span class="line">    <span class="keyword">int</span> tm_mday;        <span class="comment">// day of the month</span></span><br><span class="line">    <span class="keyword">int</span> tm_mon;         <span class="comment">// month [0~11]</span></span><br><span class="line">    <span class="keyword">int</span> tm_year;        <span class="comment">// year, form 1900</span></span><br><span class="line">    <span class="keyword">int</span> tm_wday;        <span class="comment">// day of the week</span></span><br><span class="line">    <span class="keyword">int</span> tm_yday;        <span class="comment">// day in the year</span></span><br><span class="line">    <span class="keyword">int</span> tm_isdst;       <span class="comment">// daylight saving time</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<h1 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;time.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     * time_t time(time_t *seconds);返回自纪元</span></span><br><span class="line"><span class="comment">     * Epoch（1970-01-01 00:00:00 UTC）起经过</span></span><br><span class="line"><span class="comment">     * 的时间,以秒为单位。</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="comment">/*如果seconds不为空，则返回值也会存储在seconds中*/</span></span><br><span class="line">    <span class="keyword">time_t</span> sec = time(<span class="literal">NULL</span>);</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     * struct tm *localtime(const time_t *timep);</span></span><br><span class="line"><span class="comment">     * 将时间数值变换成本地时间</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">tm</span> *<span class="title">local_time</span> = <span class="title">localtime</span>(&amp;<span class="title">sec</span>);</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"localtime: %d/%d/%d--%d:%d:%d\n"</span>, local_time-&gt;tm_year + <span class="number">1900</span>, local_time-&gt;tm_mon + <span class="number">1</span>, </span><br><span class="line">           local_time-&gt;tm_mday, local_time-&gt;tm_hour, local_time-&gt;tm_min, local_time-&gt;tm_sec);</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     * char *asctime(const struct tm *tm);</span></span><br><span class="line"><span class="comment">     * 该函数返回一个 C 字符串，包含了可读格式的日期和时间信息 Www Mmm dd hh:mm:ss yyyy，</span></span><br><span class="line"><span class="comment">     * 其中，Www 表示星期几，Mmm 是以字母表示的月份，dd 表示一月中的第几天，hh:mm:ss 表示时间，</span></span><br><span class="line"><span class="comment">     * yyyy 表示年份。</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">char</span> *time_buf = asctime(local_time);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"asctime--&gt;localtime: %s\n"</span>, time_buf);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <p>time、localtime和asctime的用法示例。</p>
+        
+          <p class="article-more-link">
+            <a href="/2018/07/14/time-localtime/#more">Read More</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
@@ -95,51 +98,6 @@
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux-c/">linux-c</a></li></ul>
 
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/07/14/hello-world/" class="article-date">
-  <time datetime="2018-07-14T15:10:25.516Z" itemprop="datePublished">2018-07-14</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/07/14/hello-world/">Hello World</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/14/hello-world/" data-id="cjjmifk6h0000sstrmt76f25e" class="article-share-link">Share</a>
-      
-      
     </footer>
   </div>
   
@@ -193,10 +151,6 @@
         
           <li>
             <a href="/2018/07/14/time-localtime/">time &amp; localtime</a>
-          </li>
-        
-          <li>
-            <a href="/2018/07/14/hello-world/">Hello World</a>
           </li>
         
       </ul>
