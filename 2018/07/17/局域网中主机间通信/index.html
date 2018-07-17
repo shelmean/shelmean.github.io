@@ -5,15 +5,23 @@
   
 
   
-  <title>Shelmean</title>
+  <title>局域网中主机间通信 | Shelmean</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Shelmean">
-<meta property="og:url" content="http://yoursite.com/index.html">
+  <meta name="description" content="局域网中主机间通信的大致流程。">
+<meta name="keywords" content="network">
+<meta property="og:type" content="article">
+<meta property="og:title" content="局域网中主机间通信">
+<meta property="og:url" content="http://yoursite.com/2018/07/17/局域网中主机间通信/index.html">
 <meta property="og:site_name" content="Shelmean">
+<meta property="og:description" content="局域网中主机间通信的大致流程。">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/2018/07/17/局域网中主机间通信/fist.png">
+<meta property="og:image" content="http://yoursite.com/2018/07/17/局域网中主机间通信/second.png">
+<meta property="og:updated_time" content="2018-07-17T14:52:13.822Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Shelmean">
+<meta name="twitter:title" content="局域网中主机间通信">
+<meta name="twitter:description" content="局域网中主机间通信的大致流程。">
+<meta name="twitter:image" content="http://yoursite.com/2018/07/17/局域网中主机间通信/fist.png">
   
     <link rel="alternate" href="/atom.xml" title="Shelmean" type="application/atom+xml">
   
@@ -60,9 +68,7 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-    <article id="post-局域网中主机间通信" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-局域网中主机间通信" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/07/17/局域网中主机间通信/" class="article-date">
   <time datetime="2018-07-17T14:46:08.000Z" itemprop="datePublished">2018-07-17</time>
@@ -75,8 +81,8 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/07/17/局域网中主机间通信/">局域网中主机间通信</a>
+    <h1 class="article-title" itemprop="name">
+      局域网中主机间通信
     </h1>
   
 
@@ -85,11 +91,16 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>局域网中主机间通信的大致流程。</p>
-        
-          <p class="article-more-link">
-            <a href="/2018/07/17/局域网中主机间通信/#more">Read More</a>
-          </p>
-        
+<a id="more"></a>
+<h2 id="主机间通信流程"><a href="#主机间通信流程" class="headerlink" title="主机间通信流程"></a>主机间通信流程</h2><p><img src="/2018/07/17/局域网中主机间通信/fist.png"></p>
+<p>假如： 主机 A 要和主机 B 通信，主机 A 知道主机 B 的IP地址。知道IP地址是通信的前提。</p>
+<p>​    首先，要通进行通信，IP地址和MAC地址是必不可少的，IP地址已经知道了，那么主机 A 必须要知道主机 B 的MAC地址，主机 A 广播发送ARP请求来获取目的MAC地址，说 who is 192.168.1.102 ?  </p>
+<p>​    当IP地址是192.168.1.102的主机 B 收到后，会回复主机 A ，说 “我是192.168.1.102，我的MAC地址是：xx-xx-xx-xx-xx-xx”（ARP应答）。这样一来，主机 A 就知道主机 B 的MAC地址了，当然，由于主机 A 在广播发送的ARP报文时，主机 A 的MAC地址被作为源MAC地址而封装在MAC帧中，所以主机 B 收到广播报文后也会知道主机 A 的MAC地址，这时，主机 A 的源IP地址、目的IP地址、源MAC地址和目的MAC地址都能确定了，就能够进行通信了。这也就是平时说的同一网段中的主机相互通信。</p>
+<h2 id="不同网段间的通信"><a href="#不同网段间的通信" class="headerlink" title="不同网段间的通信"></a>不同网段间的通信</h2><p>这里的不同网段，指的是不在同一子网下。</p>
+<p><img src="/2018/07/17/局域网中主机间通信/second.png"></p>
+<p>假如：主机 A 要和主机 D 进行通信，那么同样的，主机 A 如果广播发送 ARP 请求，询问192.168.1.22在哪里，很显然，主机 A 和主机 D 不在同一个网段内，路由器默认不转发广播报文，那么主机 D 就收不到 ARP 请求，也就无法回应主机 A，主机 A 也就无从获取主机 D 的MAC地址。</p>
+<p>​    其实，主机 A 会首先检查目的IP地址是否与自己在同一网段，如果在，就直接广播ARP请求来获取目的主机的MAC地址，如果不在同一网段，又配置有网关地址的话，那么主机 A 就通过 ARP 请求，询问192.168.0.1（网关）在哪里，网关收到后就会回应主机 A ，把网关的MAC地址告诉主机 A ，当获取到网关的MAC地址后，把网关的MAC地址作为MAC帧中的目的MAC地址，然后就把数据丢给网关 192.168.0.1 ，网关根据路由表，转发给下一个路由器，再由下一个路由器交付给主机 D 所在的网络，即网关，网关再通过ARP，找到目的主机 D ，完成数据交付。</p>
+
       
     </div>
     <footer class="article-footer">
@@ -101,54 +112,19 @@
     </footer>
   </div>
   
-</article>
-
-
+    
+<nav id="article-nav">
   
-    <article id="post-time-localtime" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/07/14/time-localtime/" class="article-date">
-  <time datetime="2018-07-14T15:18:30.000Z" itemprop="datePublished">2018-07-14</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/07/14/time-localtime/">time &amp; localtime</a>
-    </h1>
+    <a href="/2018/07/14/time-localtime/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">time &amp; localtime</div>
+    </a>
   
+</nav>
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>time、localtime和asctime的用法示例。</p>
-        
-          <p class="article-more-link">
-            <a href="/2018/07/14/time-localtime/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/14/time-localtime/" data-id="cjjpth1lf0000m4trwfk58xyc" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux-c/">linux-c</a></li></ul>
-
-    </footer>
-  </div>
   
 </article>
-
-
-  
-
 
 </section>
         
