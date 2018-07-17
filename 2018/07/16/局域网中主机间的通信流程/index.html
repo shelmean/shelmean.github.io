@@ -7,20 +7,20 @@
   
   <title>局域网中主机间的通信流程 | Shelmean</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="通信流程 假如： 主机 A 要和主机 B 通信，主机 A 知道主机 B 的IP地址。知道IP地址是通信的前提。 ​    首先，要通进行通信，IP地址和MAC地址是必不可少的，IP地址已经知道了，那么主机 A 必须要知道主机 B 的MAC地址，主机 A 广播发送ARP请求来获取目的MAC地址，说 who is 192.168.1.102 ?   ​    当IP地址是192.168.1.102的主">
+  <meta name="description" content="局域网中主机间通信的大致流程。">
 <meta name="keywords" content="network">
 <meta property="og:type" content="article">
 <meta property="og:title" content="局域网中主机间的通信流程">
 <meta property="og:url" content="http://yoursite.com/2018/07/16/局域网中主机间的通信流程/index.html">
 <meta property="og:site_name" content="Shelmean">
-<meta property="og:description" content="通信流程 假如： 主机 A 要和主机 B 通信，主机 A 知道主机 B 的IP地址。知道IP地址是通信的前提。 ​    首先，要通进行通信，IP地址和MAC地址是必不可少的，IP地址已经知道了，那么主机 A 必须要知道主机 B 的MAC地址，主机 A 广播发送ARP请求来获取目的MAC地址，说 who is 192.168.1.102 ?   ​    当IP地址是192.168.1.102的主">
+<meta property="og:description" content="局域网中主机间通信的大致流程。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://yoursite.com/2018/07/16/局域网中主机间的通信流程/img/局域网主机间通信.png">
 <meta property="og:image" content="http://yoursite.com/2018/07/16/局域网中主机间的通信流程/img/不同网段间通信.png">
-<meta property="og:updated_time" content="2018-07-17T14:32:49.102Z">
+<meta property="og:updated_time" content="2018-07-17T14:34:40.956Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="局域网中主机间的通信流程">
-<meta name="twitter:description" content="通信流程 假如： 主机 A 要和主机 B 通信，主机 A 知道主机 B 的IP地址。知道IP地址是通信的前提。 ​    首先，要通进行通信，IP地址和MAC地址是必不可少的，IP地址已经知道了，那么主机 A 必须要知道主机 B 的MAC地址，主机 A 广播发送ARP请求来获取目的MAC地址，说 who is 192.168.1.102 ?   ​    当IP地址是192.168.1.102的主">
+<meta name="twitter:description" content="局域网中主机间通信的大致流程。">
 <meta name="twitter:image" content="http://yoursite.com/2018/07/16/局域网中主机间的通信流程/img/局域网主机间通信.png">
   
     <link rel="alternate" href="/atom.xml" title="Shelmean" type="application/atom+xml">
@@ -90,7 +90,9 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="通信流程"><a href="#通信流程" class="headerlink" title="通信流程"></a>通信流程</h1><p><img src="img/局域网主机间通信.png"></p>
+        <p>局域网中主机间通信的大致流程。</p>
+<a id="more"></a>
+<h1 id="通信流程"><a href="#通信流程" class="headerlink" title="通信流程"></a>通信流程</h1><p><img src="img/局域网主机间通信.png"></p>
 <p>假如： 主机 A 要和主机 B 通信，主机 A 知道主机 B 的IP地址。知道IP地址是通信的前提。</p>
 <p>​    首先，要通进行通信，IP地址和MAC地址是必不可少的，IP地址已经知道了，那么主机 A 必须要知道主机 B 的MAC地址，主机 A 广播发送ARP请求来获取目的MAC地址，说 who is 192.168.1.102 ?  </p>
 <p>​    当IP地址是192.168.1.102的主机 B 收到后，会回复主机 A ，说 “我是192.168.1.102，我的MAC地址是：xx-xx-xx-xx-xx-xx”（ARP应答）。这样一来，主机 A 就知道主机 B 的MAC地址了，当然，由于主机 A 在广播发送的ARP报文时，主机 A 的MAC地址被作为源MAC地址而封装在MAC帧中，所以主机 B 收到广播报文后也会知道主机 A 的MAC地址，这时，主机 A 的源IP地址、目的IP地址、源MAC地址和目的MAC地址都能确定了，就能够进行通信了。这也就是平时说的同一网段中的主机相互通信。</p>
